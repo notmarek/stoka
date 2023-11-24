@@ -75,7 +75,7 @@ async fn register(
         username: ActiveValue::Set(req_data.username.clone()),
         password: ActiveValue::Set(hash_password(
             req_data.password.clone(),
-            "salty:)".to_string(),
+            "very7898952salty:)".to_string(), // Todo: make the salt reanomd
         )),
         admin: ActiveValue::Set(false),
     };
