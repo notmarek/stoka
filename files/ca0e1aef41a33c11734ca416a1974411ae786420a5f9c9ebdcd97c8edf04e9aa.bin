@@ -1,6 +1,0 @@
-128 9162bba348b200d4062551b7853921c5 mt8110_bellatrix/u-boot.bin 5 bootloader_bin
-128 8f20b3ca52b0095f709a57eb37a4ec90 mt8110_bellatrix/boot.img 65 update_image_boot
-128 4b577816eaa5bad11138dc68b58671e5 mt8110_bellatrix/bl2.img 1 update_image_bl2
-128 58d9bed0f9a8e4f534e644b148e16577 mt8110_bellatrix/tee.img 3 update_image_tee
-128 e815b7c911308d604db6f97f0ea5e072 mt8110_bellatrix/quickboot.img 1 update_image_quickboot
-128 7556101fd809968859f451708e3c1127 rootfs.img.gz 2127 update_image_rootfs

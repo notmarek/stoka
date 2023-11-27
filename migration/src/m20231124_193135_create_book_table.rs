@@ -24,19 +24,19 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Book::Hash).string().not_null())
                     .col(ColumnDef::new(Book::UserId).integer().not_null())
                     .col(ColumnDef::new(Book::FileTyoe).integer().not_null())
-                    .col(ColumnDef::new(Book::EmailId).integer().not_null())
+                    // .col(ColumnDef::new(Book::EmailId).integer().not_null())
                     .foreign_key(
                         ForeignKey::create()
                             .name("fk-book-user_id")
                             .from(Book::Table, Book::UserId)
                             .to(User::Table, User::Id),
                     )
-                    .foreign_key(
-                        ForeignKey::create()
-                            .name("fk-book-email_id")
-                            .from(Book::Table, Book::EmailId)
-                            .to(Email::Table, Email::Id),
-                    )
+                    // .foreign_key(
+                    //     ForeignKey::create()
+                    //         .name("fk-book-email_id")
+                    //         .from(Book::Table, Book::EmailId)
+                    //         .to(Email::Table, Email::Id),
+                    // )
                     .foreign_key(
                         ForeignKey::create()
                             .name("fk-book-filetype")
@@ -63,5 +63,5 @@ enum Book {
     Hash,
     UserId,
     FileTyoe,
-    EmailId,
+    // EmailId,
 }

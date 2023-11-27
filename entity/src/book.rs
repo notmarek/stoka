@@ -11,19 +11,19 @@ pub struct Model {
     pub hash: String,
     pub user_id: i32,
     pub file_tyoe: i32,
-    pub email_id: i32,
+    // pub email_id: i32,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    #[sea_orm(
-        belongs_to = "super::email::Entity",
-        from = "Column::EmailId",
-        to = "super::email::Column::Id",
-        on_update = "NoAction",
-        on_delete = "NoAction"
-    )]
-    Email,
+    // #[sea_orm(
+    //     belongs_to = "super::email::Entity",
+    //     from = "Column::EmailId",
+    //     to = "super::email::Column::Id",
+    //     on_update = "NoAction",
+    //     on_delete = "NoAction"
+    // )]
+    // Email,
     #[sea_orm(
         belongs_to = "super::file_type::Entity",
         from = "Column::FileTyoe",
@@ -42,11 +42,11 @@ pub enum Relation {
     User,
 }
 
-impl Related<super::email::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::Email.def()
-    }
-}
+// impl Related<super::email::Entity> for Entity {
+//     fn to() -> RelationDef {
+//         Relation::Email.def()
+//     }
+// }
 
 impl Related<super::file_type::Entity> for Entity {
     fn to() -> RelationDef {
