@@ -1,6 +1,6 @@
 use actix_cors::Cors;
 use actix_web::{http::header, middleware, web::Data, App, HttpServer};
-use ksync::{api, config::Config};
+use stoka::{api, config::Config};
 use log::{debug, info};
 use migration::MigratorTrait;
 use sea_orm::{Database, DatabaseConnection};
