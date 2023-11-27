@@ -9,7 +9,6 @@ use actix_web::{web, HttpResponse};
 use entity::user::{self, ActiveModel, Entity};
 use sea_orm::{ActiveValue, ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter};
 use serde::{Deserialize, Serialize};
-use utoipa::ToSchema;
 
 pub fn hash_password(password: String, salt: String) -> String {
     let config = ArgonConf {
@@ -24,7 +23,7 @@ pub fn hash_password(password: String, salt: String) -> String {
     };
     hash_encoded(password.as_bytes(), salt.as_bytes(), &config).unwrap()
 }
-#[derive(ToSchema, Serialize, Deserialize)]
+#[derive( Serialize, Deserialize)]
 pub struct Tokens {
     status: String,
     token_type: String,
@@ -33,7 +32,7 @@ pub struct Tokens {
     expiration: i64,
 }
 
-#[derive(ToSchema, Serialize, Deserialize, Debug)]
+#[derive( Serialize, Deserialize, Debug)]
 pub struct UserRequest {
     pub username: Option<String>,
     pub password: Option<String>,
@@ -45,14 +44,14 @@ pub struct UserRequest {
     pub private: Option<String>,     // TODO: account privacy settings
 }
 
-#[derive(ToSchema, Serialize, Deserialize, Debug)]
+#[derive( Serialize, Deserialize, Debug)]
 pub struct EditUser {
     username: Option<String>,
     password: Option<String>,
     permissions: Option<String>,
 }
 
-#[derive(ToSchema, Serialize, Deserialize, Debug)]
+#[derive( Serialize, Deserialize, Debug)]
 pub struct RegisterRequest {
     pub username: String,
     pub password: String,

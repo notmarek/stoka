@@ -4,6 +4,7 @@ use std::path::PathBuf;
 #[derive(Deserialize, Clone)]
 pub struct Config {
     pub address: String,
+    pub filepath: String,
     pub port: u16,
     pub jwt: JWTConfig,
     #[serde(default)]

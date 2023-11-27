@@ -2,6 +2,7 @@ use actix_web::{middleware::Compat, web};
 use actix_web_httpauth::middleware::HttpAuthentication;
 
 pub mod user;
+pub mod book;
 
 pub fn configure(cfg: &mut web::ServiceConfig) {
     let auth = HttpAuthentication::bearer(crate::auth::validator);
@@ -9,6 +10,7 @@ pub fn configure(cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::scope("/api")
             .wrap(Compat::new(auth))
+            .configure(book::configure)
             .configure(user::configure),
     );
 }
