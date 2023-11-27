@@ -117,11 +117,24 @@ async fn remove(
 #[get("/books")]
 async fn list(
     _config: web::Data<Config>,
-    _db: web::Data<DatabaseConnection>,
-    AuthData(_user): AuthData,
-) -> impl actix_web::Responder {
-    todo!("make it work");
-    ""
+    db: web::Data<DatabaseConnection>,
+    AuthData(user): AuthData,
+) -> actix_web::Result<impl actix_web::Responder> {
+    let db: &DatabaseConnection = &db;
+    match Book::find()
+        .filter(BookCol::UserId.eq(user.id))
+        .all(db)
+        .await
+    {
+        Ok(b) => Ok(HttpResponse::Ok().json(Response {
+            status: "ok".to_string(),
+            data: b,
+        })),
+        Err(e) => Err(error::ErrorNotFound(ErrorResponse {
+            status: "error".to_string(),
+            error: e.to_string(),
+        })),
+    }
 }
 
 #[put("/book")]
@@ -160,7 +173,6 @@ async fn upload(
     if let Some(name) = filename.file_stem() {
         title = name.to_string_lossy().to_string();
     }
-    println!("{:#?}", book.file);
 
     let ft_id = match FileType::find()
         .filter(FTCol::Name.eq(extension.to_lowercase()))
