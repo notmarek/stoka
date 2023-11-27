@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use actix_web::FromRequest;
 use actix_web::HttpMessage;
 use actix_web::HttpRequest;
@@ -22,7 +24,11 @@ pub struct ErrorResponse {
     status: String,
     error: String,
 }
-
+impl Display for ErrorResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        serde_json::to_string(self).unwrap().fmt(f)
+    }
+}
 #[derive(Clone, Debug)]
 pub struct AuthData(pub entity::user::Model);
 
