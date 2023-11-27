@@ -1845,39 +1845,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "ksync"
-version = "0.1.0"
-dependencies = [
- "actix-cors",
- "actix-files",
- "actix-http",
- "actix-multipart",
- "actix-service",
- "actix-web",
- "actix-web-httpauth",
- "async-recursion",
- "async-trait",
- "chrono",
- "entity",
- "futures",
- "hex",
- "jsonwebtoken",
- "log",
- "migration",
- "pretty_env_logger",
- "reqwest",
- "rust-argon2",
- "sea-orm",
- "serde",
- "serde_json",
- "sha2",
- "sysinfo",
- "thiserror",
- "tokio",
- "uuid",
-]
-
-[[package]]
 name = "kv-log-macro"
 version = "1.0.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3475,6 +3442,39 @@ name = "static_assertions"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
+
+[[package]]
+name = "stoka"
+version = "0.1.0"
+dependencies = [
+ "actix-cors",
+ "actix-files",
+ "actix-http",
+ "actix-multipart",
+ "actix-service",
+ "actix-web",
+ "actix-web-httpauth",
+ "async-recursion",
+ "async-trait",
+ "chrono",
+ "entity",
+ "futures",
+ "hex",
+ "jsonwebtoken",
+ "log",
+ "migration",
+ "pretty_env_logger",
+ "reqwest",
+ "rust-argon2",
+ "sea-orm",
+ "serde",
+ "serde_json",
+ "sha2",
+ "sysinfo",
+ "thiserror",
+ "tokio",
+ "uuid",
+]
 
 [[package]]
 name = "stringprep"

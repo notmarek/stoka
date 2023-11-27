@@ -1,5 +1,5 @@
 [package]
-name = "ksync"
+name = "stoka"
 version = "0.1.0"
 authors = ["NotMarek <me@notmarek.com>"]
 edition = "2021"
