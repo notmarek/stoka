@@ -5,10 +5,10 @@ use actix_multipart::form::{tempfile::TempFile, MultipartForm};
 use actix_web::http::header::ContentDisposition;
 use actix_web::{delete, get, put};
 use actix_web::{error, web, HttpResponse};
-use chrono::format::format;
+
 use entity::book::ActiveModel as BookActiveModel;
 use entity::book::Column as BookCol;
-use entity::book::Model as BookModel;
+
 use entity::file_type::ActiveModel as FTActiveModel;
 use entity::file_type::Column as FTCol;
 use entity::file_type::Model as FTModel;
@@ -17,7 +17,7 @@ use entity::prelude::FileType;
 // use entity::user::{self, ActiveModel, Entity};
 use actix_files::NamedFile;
 use hex::encode;
-use sea_orm::{ActiveValue, ColumnTrait, DatabaseConnection, EntityTrait, Linked, QueryFilter};
+use sea_orm::{ActiveValue, ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::io::{Read, Write};
@@ -106,9 +106,9 @@ async fn download(
 
 #[delete("/book/{id}")]
 async fn remove(
-    config: web::Data<Config>,
-    db: web::Data<DatabaseConnection>,
-    AuthData(user): AuthData,
+    _config: web::Data<Config>,
+    _db: web::Data<DatabaseConnection>,
+    AuthData(_user): AuthData,
 ) -> impl actix_web::Responder {
     todo!("make it work");
     ""
@@ -116,9 +116,9 @@ async fn remove(
 
 #[get("/books")]
 async fn list(
-    config: web::Data<Config>,
-    db: web::Data<DatabaseConnection>,
-    AuthData(user): AuthData,
+    _config: web::Data<Config>,
+    _db: web::Data<DatabaseConnection>,
+    AuthData(_user): AuthData,
 ) -> impl actix_web::Responder {
     todo!("make it work");
     ""
