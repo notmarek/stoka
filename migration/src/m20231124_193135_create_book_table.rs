@@ -1,5 +1,4 @@
 use super::m20220101_000001_create_user_table::User;
-use super::m20231124_193703_create_email_table::Email;
 use super::m20231124_194004_create_filetype_table::FileType;
 use sea_orm_migration::prelude::*;
 #[derive(DeriveMigrationName)]

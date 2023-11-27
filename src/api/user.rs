@@ -23,7 +23,7 @@ pub fn hash_password(password: String, salt: String) -> String {
     };
     hash_encoded(password.as_bytes(), salt.as_bytes(), &config).unwrap()
 }
-#[derive( Serialize, Deserialize)]
+#[derive(Serialize, Deserialize)]
 pub struct Tokens {
     status: String,
     token_type: String,
@@ -32,7 +32,7 @@ pub struct Tokens {
     expiration: i64,
 }
 
-#[derive( Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct UserRequest {
     pub username: Option<String>,
     pub password: Option<String>,
@@ -44,14 +44,14 @@ pub struct UserRequest {
     pub private: Option<String>,     // TODO: account privacy settings
 }
 
-#[derive( Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct EditUser {
     username: Option<String>,
     password: Option<String>,
     permissions: Option<String>,
 }
 
-#[derive( Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct RegisterRequest {
     pub username: String,
     pub password: String,

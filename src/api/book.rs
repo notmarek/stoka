@@ -1,15 +1,9 @@
 use crate::config::Config;
 // use hex_literal::hex;
 use crate::AuthData;
-use actix_multipart::{
-    form::{
-        tempfile::{TempFile, TempFileConfig},
-        MultipartForm,
-    },
-    Multipart,
-};
-use actix_web::{get, post, put};
-use actix_web::{web, HttpResponse};
+use actix_multipart::form::{tempfile::TempFile, MultipartForm};
+use actix_web::put;
+use actix_web::web;
 use entity::book::ActiveModel as BookActiveModel;
 use entity::file_type::ActiveModel as FTActiveModel;
 use entity::file_type::Column as FTCol;
@@ -18,9 +12,9 @@ use entity::prelude::FileType;
 // use entity::user::{self, ActiveModel, Entity};
 use hex::encode;
 use sea_orm::{ActiveValue, ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter};
-use serde::{Deserialize, Serialize};
-use sha2::{Digest, Sha256, Sha512};
-use std::io::{self, Read, Write};
+
+use sha2::{Digest, Sha256};
+use std::io::{Read, Write};
 use std::path::Path;
 
 #[derive(Debug, MultipartForm)]
@@ -67,7 +61,6 @@ async fn upload(
     }
     println!("{:#?}", book.file);
 
-    
     let ft_id = match FileType::find()
         .filter(FTCol::Name.eq(extension.to_lowercase()))
         .one(db)

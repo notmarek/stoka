@@ -1,8 +1,8 @@
 use actix_web::{middleware::Compat, web};
 use actix_web_httpauth::middleware::HttpAuthentication;
 
-pub mod user;
 pub mod book;
+pub mod user;
 
 pub fn configure(cfg: &mut web::ServiceConfig) {
     let auth = HttpAuthentication::bearer(crate::auth::validator);
