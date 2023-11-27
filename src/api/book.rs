@@ -7,7 +7,7 @@ use actix_web::{delete, get, put};
 use actix_web::{error, web, HttpResponse};
 
 use entity::book::Column as BookCol;
-use entity::book::{self, ActiveModel as BookActiveModel};
+use entity::book::{ActiveModel as BookActiveModel};
 
 use entity::file_type::ActiveModel as FTActiveModel;
 use entity::file_type::Column as FTCol;

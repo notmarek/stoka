@@ -10,7 +10,7 @@ members = [".", "migration", "entity"]
 
 [dependencies]
 # actix - web framework
-actix-web = "4.4"
+actix-web = {version = "4.4", features = ["rustls"]}
 actix-cors = "0.6"
 actix-http = "3.4"
 actix-files = "0.6"
@@ -50,9 +50,6 @@ sea-orm = { version = "0.12", features = [
 
 # argon2 - password hashing
 rust-argon2 = "2.0"
-
-# uuid - uuid generation
-uuid = { version = "1", features = ["v4", "fast-rng", "macro-diagnostics"] }
 
 # sysinfo - system info
 sysinfo = "0.29"
