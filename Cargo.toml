@@ -21,9 +21,6 @@ tokio = { version = "1.32", features = ["rt-multi-thread", "macros"] }
 
 sha2 = "0.10.8"
 
-# reqwest - http client
-reqwest = { version = "0.11", features = ["json", "stream"] }
-
 # serde - json serialization
 serde = { version = "1", features = ["derive"] }
 serde_json = "1.0"
@@ -35,9 +32,7 @@ log = "0.4"
 # jwt - authorization
 jsonwebtoken = "9"
 
-# chrono - date and time
 chrono = "0.4"
-
 # sea-orm - database
 sea-orm = { version = "0.12", features = [
     "debug-print",
@@ -51,20 +46,13 @@ sea-orm = { version = "0.12", features = [
 # argon2 - password hashing
 rust-argon2 = "2.0"
 
-# sysinfo - system info
-sysinfo = "0.29"
-
 # futures - async
 futures = "0.3"
 
 # thiserror - error handling
 thiserror = "1.0"
 
-# async-trait - async trait 
-async-trait = "0.1"
-
 entity = { path = "entity" }
 migration = { path = "migration" }
 
-async-recursion = "1"
 hex = "0.4.3"
