@@ -6,8 +6,8 @@ use actix_web::http::header::ContentDisposition;
 use actix_web::{delete, get, put};
 use actix_web::{error, web, HttpResponse};
 
-use entity::book::ActiveModel as BookActiveModel;
 use entity::book::Column as BookCol;
+use entity::book::{self, ActiveModel as BookActiveModel};
 
 use entity::file_type::ActiveModel as FTActiveModel;
 use entity::file_type::Column as FTCol;
@@ -104,14 +104,33 @@ async fn download(
         )))
 }
 
-#[delete("/book/{id}")]
+#[delete("/book/{book_id}")]
 async fn remove(
+    bookid: web::Path<BookId>,
     _config: web::Data<Config>,
-    _db: web::Data<DatabaseConnection>,
-    AuthData(_user): AuthData,
-) -> impl actix_web::Responder {
-    todo!("make it work");
-    ""
+    db: web::Data<DatabaseConnection>,
+    AuthData(user): AuthData,
+) -> actix_web::Result<impl actix_web::Responder> {
+    let db: &DatabaseConnection = &db;
+    match Book::delete(BookActiveModel {
+        title: ActiveValue::NotSet,
+        hash: ActiveValue::NotSet,
+        file_tyoe: ActiveValue::NotSet,
+        id: ActiveValue::Set(bookid.book_id),
+        user_id: ActiveValue::Set(user.id),
+    })
+    .exec(db)
+    .await
+    {
+        Ok(b) => Ok(HttpResponse::Ok().json(Response {
+            status: "ok".to_string(),
+            data: b.rows_affected,
+        })),
+        Err(e) => Err(error::ErrorNotFound(ErrorResponse {
+            status: "error".to_string(),
+            error: e.to_string(),
+        })),
+    }
 }
 
 #[get("/books")]
