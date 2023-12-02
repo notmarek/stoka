@@ -10,4 +10,4 @@ cargo run :)
 
 what else do i need
 
-the client -- it doesn exist yet :)
+the client -- [koreader plugin](https://github.com/notmarek/stoka.koplugin)
