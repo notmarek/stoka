@@ -6,21 +6,26 @@ use actix_web::http::header::ContentDisposition;
 use actix_web::{delete, get, put};
 use actix_web::{error, web, HttpResponse};
 
+use entity::book::ActiveModel as BookActiveModel;
 use entity::book::Column as BookCol;
-use entity::book::{ActiveModel as BookActiveModel};
+
+use entity::book_info::ActiveModel as BookInfoActiveModel;
+use entity::book_info::Column as BICol;
 
 use entity::file_type::ActiveModel as FTActiveModel;
 use entity::file_type::Column as FTCol;
 use entity::file_type::Model as FTModel;
 use entity::prelude::Book;
+use entity::prelude::BookInfo;
 use entity::prelude::FileType;
+use epub::doc::EpubDoc;
 // use entity::user::{self, ActiveModel, Entity};
 use actix_files::NamedFile;
 use hex::encode;
 use sea_orm::{ActiveValue, ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
-use std::io::{Read, Write};
+use std::io::{Cursor, Read, Write};
 use std::path::Path;
 #[derive(Deserialize)]
 struct BookId {
@@ -173,6 +178,7 @@ async fn upload(
     }
     let hash = encode(hasher.finalize());
     let new_path = format!("{}/{}.bin", config.filepath, hash);
+
     match std::fs::metadata(&new_path) {
         Ok(_) => println!("File already exists!"),
         Err(_) => std::fs::File::create(&new_path)
@@ -183,9 +189,44 @@ async fn upload(
     let filename_string = book.file_name.unwrap_or("unk.epub".to_string());
     let filename = Path::new(&filename_string);
 
-    let mut extension = ".epub".to_string();
+    let mut extension = ".unk".to_string();
     if let Some(ext) = filename.extension() {
         extension = ext.to_string_lossy().to_string();
+    }
+
+    if BookInfo::find()
+        .filter(BICol::BookHash.eq(&hash))
+        .one(db)
+        .await
+        .unwrap()
+        .is_none()
+        && extension.to_lowercase() == "epub"
+    {
+        // yo we got an epub - parse that shit
+        if let Ok(mut epub) = EpubDoc::from_reader(Cursor::new(buf)) {
+            let title = epub.mdata("title");
+            let creator = epub.mdata("creator");
+            let mimetype: Option<String> = if let Some((cover_data, mime_type)) = epub.get_cover() {
+                std::fs::File::create(format!("{}/{}-cover.bin", config.filepath, hash))
+                    .unwrap()
+                    .write_all(&cover_data)
+                    .unwrap();
+                Some(mime_type)
+            } else {
+                None
+            };
+            let new_book_info = BookInfoActiveModel {
+                id: ActiveValue::NotSet,
+                book_hash: ActiveValue::Set(hash.clone()),
+                title: ActiveValue::Set(title.unwrap()),
+                creator: ActiveValue::Set(creator.unwrap()),
+                cover_mime: ActiveValue::Set(mimetype),
+            };
+            BookInfo::insert(new_book_info).exec(db).await.unwrap();
+        }
+        // else {
+        // maybe it wasnt an epub (?) lol
+        // }
     }
 
     let mut title = "unk".to_string();

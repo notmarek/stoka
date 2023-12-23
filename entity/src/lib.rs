@@ -6,3 +6,4 @@ pub mod book;
 pub mod email;
 pub mod file_type;
 pub mod user;
+pub mod book_info;
