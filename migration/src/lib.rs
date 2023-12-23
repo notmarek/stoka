@@ -4,6 +4,7 @@ mod m20220101_000001_create_user_table;
 mod m20231124_193135_create_book_table;
 mod m20231124_193703_create_email_table;
 mod m20231124_194004_create_filetype_table;
+mod m20231223_230304_book_info_table;
 
 pub struct Migrator;
 
@@ -15,6 +16,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20231124_193135_create_book_table::Migration),
             Box::new(m20231124_193703_create_email_table::Migration),
             Box::new(m20231124_194004_create_filetype_table::Migration),
+            Box::new(m20231223_230304_book_info_table::Migration),
         ]
     }
 }

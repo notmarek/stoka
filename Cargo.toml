@@ -56,3 +56,5 @@ entity = { path = "entity" }
 migration = { path = "migration" }
 
 hex = "0.4.3"
+
+epub = "2.1.1"
