@@ -11,6 +11,7 @@ use entity::book::Column as BookCol;
 
 use entity::book_info::ActiveModel as BookInfoActiveModel;
 use entity::book_info::Column as BICol;
+use entity::book_info::Model as BIModel;
 
 use entity::file_type::ActiveModel as FTActiveModel;
 use entity::file_type::Column as FTCol;
@@ -39,6 +40,7 @@ struct FullBook {
     pub hash: String,
     pub user_id: i32,
     pub file_type: FTModel,
+    pub meta: Option<BIModel>,
 }
 
 impl BookId {
@@ -54,12 +56,18 @@ impl BookId {
                     .await
                     .unwrap()
                     .unwrap();
+                let bi = BookInfo::find()
+                    .filter(BICol::BookHash.eq(&book.hash))
+                    .one(pool)
+                    .await
+                    .unwrap();
                 Ok(FullBook {
                     file_type: ft,
                     id: book.id,
                     title: book.title,
                     hash: book.hash,
                     user_id: book.user_id,
+                    meta: bi,
                 })
             }
             Ok(None) => Err("No such book found.".to_string()),
@@ -107,6 +115,35 @@ async fn download(
             "{}.{}",
             book.title, book.file_type.name
         )))
+}
+
+#[get("/book/{book_id}/cover")]
+async fn cover(
+    bookid: web::Path<BookId>,
+    config: web::Data<Config>,
+    db: web::Data<DatabaseConnection>,
+    AuthData(user): AuthData,
+) -> Option<NamedFile> {
+    let book = bookid.get(user.id, &db).await.unwrap(); // we dont care just fail lol
+    if let Some(meta) = book.meta {
+        if let Some(mime) = meta.cover_mime {
+            let fp = format!("{}/{}-cover.bin", config.filepath, book.hash);
+            Some(
+                NamedFile::open_async(fp)
+                    .await
+                    .unwrap()
+                    .set_content_type(mime.parse().unwrap())
+                    .set_content_disposition(ContentDisposition::attachment(format!(
+                        "{} - {}",
+                        meta.creator, meta.title
+                    ))),
+            )
+        } else {
+            None
+        }
+    } else {
+        None
+    }
 }
 
 #[delete("/book/{book_id}")]
@@ -275,5 +312,6 @@ pub fn configure(cfg: &mut web::ServiceConfig) {
         .service(download)
         .service(remove)
         .service(list)
-        .service(book_info);
+        .service(book_info)
+        .service(cover);
 }
