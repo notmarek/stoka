@@ -1,10 +1,10 @@
 use actix_cors::Cors;
 use actix_web::{http::header, middleware, web::Data, App, HttpServer};
-use stoka::{api, config::Config};
 use log::{debug, info};
 use migration::MigratorTrait;
 use sea_orm::{Database, DatabaseConnection};
 use std::{env, str::FromStr};
+use stoka::{api, config::Config};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {

@@ -194,7 +194,7 @@ async fn upload(
         extension = ext.to_string_lossy().to_string();
     }
 
-    if BookInfo::find()
+    let new_book_info = if BookInfo::find()
         .filter(BICol::BookHash.eq(&hash))
         .one(db)
         .await
@@ -222,12 +222,14 @@ async fn upload(
                 creator: ActiveValue::Set(creator.unwrap()),
                 cover_mime: ActiveValue::Set(mimetype),
             };
-            BookInfo::insert(new_book_info).exec(db).await.unwrap();
+            Some(new_book_info)
+        } else {
+            // maybe it wasnt an epub (?) lol
+            None
         }
-        // else {
-        // maybe it wasnt an epub (?) lol
-        // }
-    }
+    } else {
+        None
+    };
 
     let mut title = "unk".to_string();
     if let Some(name) = filename.file_stem() {
@@ -262,6 +264,9 @@ async fn upload(
     };
 
     Book::insert(new_book).exec(db).await.unwrap();
+    if let Some(nbi) = new_book_info {
+        BookInfo::insert(nbi).exec(db).await.unwrap();
+    };
     "ok".to_string()
 }
 

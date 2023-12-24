@@ -1,5 +1,4 @@
 use sea_orm_migration::prelude::*;
-use super::m20231124_193135_create_book_table::Book;
 
 #[derive(DeriveMigrationName)]
 pub struct Migration;
@@ -20,12 +19,6 @@ impl MigrationTrait for Migration {
                             .primary_key(),
                     )
                     .col(ColumnDef::new(BookInfo::BookHash).string().not_null())
-                    .foreign_key(
-                        ForeignKey::create()
-                        .name("fk-book_info-book_hash")
-                        .from(BookInfo::Table, BookInfo::BookHash)
-                        .to(Book::Table, Book::Hash),
-                    )
                     .col(ColumnDef::new(BookInfo::Title).string().not_null())
                     .col(ColumnDef::new(BookInfo::Creator).string().not_null())
                     .col(ColumnDef::new(BookInfo::CoverMime).string())
